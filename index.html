@@ -37,12 +37,12 @@
             <button type="button" class="close" id="closeDownload" aria-label="Close dialog">×</button>
         </div>
         <p class="modal-intro" id="dialogDescription">Choose the file format that works best for you.</p>
-        <a class="option" href="./documents/resume.docx" download="resume.docx">
+        <a class="option" href="./resumes/JaydenBoomerResume.docx" download="resume.docx">
             <span><span class="option-title">Word Document (.docx) <span class="pill">★ ATS-friendly</span></span><span
                     class="option-desc">Recommended for applications that use applicant tracking systems.</span></span>
             <span class="option-arrow" aria-hidden="true">↓</span>
         </a>
-        <a class="option" href="./documents/resume.pdf" download="resume.pdf">
+        <a class="option" href="./resumes/JaydenBoomerResume.pdf" download="resume.pdf">
             <span><span class="option-title">PDF Document (.pdf)</span><span class="option-desc">Ideal for viewing,
                     sharing, and preserving the original layout.</span></span>
             <span class="option-arrow" aria-hidden="true">↓</span>
@@ -59,7 +59,37 @@
             if (event.target === dialog) dialog.close();
         });
         dialog.querySelectorAll('a[download]').forEach(link => {
-            link.addEventListener('click', () => dialog.close());
+            let downloading = false;
+            link.addEventListener('click', async (event) => {
+                event.preventDefault();
+                if (downloading) return;
+                downloading = true;
+                link.setAttribute('aria-busy', 'true');
+
+                try {
+                    const response = await fetch(link.href);
+                    if (!response.ok) throw new Error('File unavailable');
+                    const file = await response.blob();
+                    if (!file.size || file.type.includes('text/html')) {
+                        throw new Error('File unavailable');
+                    }
+
+                    const url = URL.createObjectURL(file);
+                    const download = document.createElement('a');
+                    download.href = url;
+                    download.download = link.download;
+                    document.body.appendChild(download);
+                    download.click();
+                    download.remove();
+                    setTimeout(() => URL.revokeObjectURL(url), 60000);
+                    dialog.close();
+                } catch {
+                    window.alert('This file is currently unavailable to download. Please try again later or choose another format.');
+                } finally {
+                    downloading = false;
+                    link.removeAttribute('aria-busy');
+                }
+            });
         });
     </script>
 </body>
