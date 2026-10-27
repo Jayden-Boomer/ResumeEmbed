@@ -709,8 +709,8 @@ a[href] *, a[href]:hover * { text-decoration: none !important; text-decoration-l
 .r-p03e {border-radius: 50% !important; overflow: hidden;}
 @media print { .r-p03e { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
 </style><style id="resume-github-image-urls">
-/* Images hosted in the public ResumeEmbed GitHub repository. */
-:root {
+/* Scope image variables to the resume for standalone and shadow DOM rendering. */
+.resume-renderer-page {
   --resume-profile-photo: url("https://raw.githubusercontent.com/Jayden-Boomer/ResumeEmbed/refs/heads/main/resume%20images/profile-photo.jpg");
   --resume-axxess-logo: url("https://raw.githubusercontent.com/Jayden-Boomer/ResumeEmbed/refs/heads/main/resume%20images/axxess-hackathon.jpg");
   --resume-hackutd-logo: url("https://raw.githubusercontent.com/Jayden-Boomer/ResumeEmbed/refs/heads/main/resume%20images/hackutd-ripple-effect.jpg");
