@@ -228,3 +228,30 @@ h2 {
         padding: 20px;
     }
 }
+
+
+/* Inline HTML résumé: fit the original 940px layout to the viewer without clipping. */
+.viewer {
+    max-width: 940px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.resume-preview-shell {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+    min-height: 0;
+}
+
+#resumeMount {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 940px;
+    transform-origin: top left;
+}

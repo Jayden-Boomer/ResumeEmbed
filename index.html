@@ -10697,8 +10697,7 @@
                 if (!page) return;
                 const width = shell.clientWidth;
                 const scale = Math.min(1, width / naturalWidth);
-                mount.style.left = '50%';
-                mount.style.transform = `translateX(-50%) scale(${scale})`;
+                mount.style.transform = `scale(${scale})`;
                 mount.style.width = `${naturalWidth}px`;
                 shell.style.height = `${Math.ceil(page.offsetHeight * scale) + 2}px`;
             };
