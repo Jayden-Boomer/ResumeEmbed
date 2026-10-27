@@ -255,3 +255,30 @@ h2 {
     width: 940px;
     transform-origin: top left;
 }
+
+/* Embedded résumé preview: preserve a 940px page, scaling it to fit. */
+body .page .viewer {
+    width: 100%;
+    max-width: 940px;
+    margin-inline: auto;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+body .page .viewer .resume-preview-shell {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border: 0;
+    background: transparent;
+}
+body .page .viewer #resumeMount {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 940px;
+    transform-origin: 0 0;
+}

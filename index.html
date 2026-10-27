@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="View and download my résumé in PDF or Word format.">
     <title>Résumé | Jayden Boomer</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=20261027-2">
 </head>
 
 <body>
@@ -10690,21 +10690,27 @@
             const shell = document.getElementById('resumeShell');
             const root = mount.attachShadow({ mode: 'open' });
             root.appendChild(document.getElementById('resumeTemplate').content.cloneNode(true));
-            // Scale the résumé responsively without leaving a colored gutter on either side.
-            const resizeResume = () => {
-                const naturalWidth = 940;
-                const page = root.querySelector('.resume-renderer-page');
-                if (!page) return;
-                const width = shell.clientWidth;
-                const scale = Math.min(1, width / naturalWidth);
-                mount.style.transform = `scale(${scale})`;
+            // The captured résumé is a fixed 940px page. Scale that page as a
+            // whole instead of reflowing its columns at narrow viewport sizes.
+            const naturalWidth = 940;
+            const resumePage = root.querySelector('.resume-renderer-page');
+            function resizeResume() {
+                if (!resumePage) return;
+                const availableWidth = shell.getBoundingClientRect().width;
+                if (!availableWidth) return;
+                const scale = Math.min(1, availableWidth / naturalWidth);
                 mount.style.width = `${naturalWidth}px`;
-                shell.style.height = `${Math.ceil(page.offsetHeight * scale) + 2}px`;
-            };
+                mount.style.transform = `scale(${scale})`;
+                shell.style.height = `${Math.ceil(resumePage.offsetHeight * scale) + 2}px`;
+            }
+            // Recalculate after layout, font loading and container resizing.
+            const observer = new ResizeObserver(resizeResume);
+            observer.observe(shell);
             window.addEventListener('resize', resizeResume);
             window.addEventListener('load', resizeResume);
             if (document.fonts) document.fonts.ready.then(resizeResume);
-            resizeResume();
+            if (root.fonts) root.fonts.ready.then(resizeResume);
+            requestAnimationFrame(resizeResume);
         </script>
         <p class="fallback">Prefer a separate view? <a href="./resumes/JaydenBoomerResume.pdf" rel="noopener"
                 target="_blank">Open the PDF in a new tab</a></p>
